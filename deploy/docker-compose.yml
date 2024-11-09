@@ -1,0 +1,70 @@
+services:
+  postgres:
+    image: postgres:16.4
+    container_name: postgres
+    environment:
+      POSTGRES_USER: randandan
+      POSTGRES_PASSWORD: randandan_XLR
+      POSTGRES_DB: dbgodelivery
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - webnet
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - webnet
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000" # Porta para o MinIO
+      - "9001:9001" # Porta para o Console do MinIO
+    command: server /data --console-address ":9001"
+    networks:
+      - webnet
+
+  coregodelivery:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: coregodelivery-app
+    ports:
+      - "5273:5273"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - DOTNET_RUNNING_IN_CONTAINER=true
+    depends_on:
+      - postgres
+      - rabbitmq
+      - minio
+    entrypoint: ["dotnet", "CoreGoDelivery.Api.dll"]
+    networks:
+      - webnet
+
+volumes:
+  pgdata:
+  rabbitmq_data:
+  minio_data:
+
+networks:
+  webnet:
+    driver: bridge

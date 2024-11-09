@@ -1,0 +1,27 @@
+{
+  "profiles": {
+    "CoreGoDelivery.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5273"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "environmentVariables": {
+        "UseInMemoryDatabase": "false",
+        "ASPNETCORE_HTTPS_PORT": "5011",
+        "ASPNETCORE_URLS": "https://+:5011;http://+:5010"
+      },
+      "useSSL": true,
+      "httpPort": 5010,
+      "sslPort": 5011
+    }
+  }
+}
