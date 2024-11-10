@@ -9,12 +9,12 @@ public class MotorcycleRepository : BaseRepository<MotorcycleEntity>, IMotorcycl
 {
     public MotorcycleRepository(ApplicationDbContext context) : base(context)
     {
-        _context.Set<MotorcycleEntity>();
+
     }
 
     public async Task<List<MotorcycleEntity>?> List(string? plate)
     {
-        if (string.IsNullOrEmpty(plate))
+        if (!string.IsNullOrEmpty(plate))
         {
             var entity = await _context.Set<MotorcycleEntity>()
                 .Include(x => x.ModelMotorcycle)

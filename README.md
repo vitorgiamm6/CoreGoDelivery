@@ -10,7 +10,7 @@ Especificações:
 - Docker compose
 - Polly
 - xUnit
-- IO de arquivos em HD
+- MinIO (File server)
 
 #How to run
 1. Abra o terminal, preferencialmente na raiz C:/ (opcional)
